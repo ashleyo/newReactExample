@@ -5,9 +5,9 @@ import TodoList from "./components/TodoList"
 export default App;
 
 const testFixture = [
-  { id: 1, text: "Wash dishes", done: true },
+  { id: 1, text: "Wash dishes", done: false },
   { id: 2, text: "Do laundry", done: false },
-  { id: 3, text: "Take shower", done: false },
+  { id: 3, text: "Take shower", done: true },
 ];
 
 function App() {

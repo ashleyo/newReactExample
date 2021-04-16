@@ -1,9 +1,12 @@
 import "../App.css";
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
 export default TodoList;
 
 function TodoList({ todos, setTodos }) {
+
   const handleToggle = (todo) => {
     const updatedTodos = todos.map((t) =>
       t.id === todo.id
@@ -15,6 +18,7 @@ function TodoList({ todos, setTodos }) {
     );
     setTodos(updatedTodos);
   };
+
   return (todos.length) ?
     (
     <section className={"App-list-wrapper"}>
@@ -70,18 +74,15 @@ function DeleteTodo({ todo, setTodos }) {
   }
 
   return (
-    <div
-      onClick={handleDeleteTodo}
-      role="button"
-      style={{
-        display: "inline-block",
-        color: "red",
+
+    <FontAwesomeIcon style={{
+        color:"red",
         fontWeight: "bold",
         marginLeft: 10,
         cursor: "pointer",
-      }}
-    >
-      x
-    </div>
+        }} 
+        role="button"
+        onClick={handleDeleteTodo}
+        icon={faTimesCircle} />
   );
 }
