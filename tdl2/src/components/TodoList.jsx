@@ -1,7 +1,7 @@
 import "../App.css";
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { faTimesCircle, faPlusSquare } from '@fortawesome/free-solid-svg-icons'
 
 export default TodoList;
 
@@ -60,8 +60,13 @@ function AddTodo({ setTodos }) {
   };
   return (
     <form onSubmit={handleAddTodo}>
-      <input name="addTodo" placeholder="Add todo" ref={inputRef} />
-      <button type="submit">Submit</button>
+      <div>
+        <input name="addTodo" placeholder="Add todo" ref={inputRef} />
+        
+        <button className="App-fonticon-surround" type="submit">
+          <FontAwesomeIcon className="App-fonticon" icon={faPlusSquare} />
+        </button>
+      </div>
     </form>
   );
 }
