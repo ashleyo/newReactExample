@@ -12,14 +12,14 @@ function TodoList({ todos, setTodos }) {
       t.id === todo.id
         ? {
             ...t,
-            done: !t.done,
+            done: (t.done.toLowerCase() === "true")? "false": "true",
           }
         : t
     );
     setTodos(updatedTodos);
   };
 
-  return (todos.length) ?
+  return todos ?
     (
     <section className={"App-list-wrapper"}>
       <ul className={"App-list-list"}>
@@ -27,7 +27,7 @@ function TodoList({ todos, setTodos }) {
           <li key={todo.id}>
             <span onClick={() => handleToggle(todo)}
               style={{
-                textDecoration: todo.done ? "line-through" : "",
+                textDecoration: (todo.done.toLowerCase() === "true") ? "line-through" : "",
               }}
             >
               {todo.text}
@@ -40,7 +40,7 @@ function TodoList({ todos, setTodos }) {
     </section>
   )
   :
-  (<p>Empty</p>)
+  (<div><p>Empty</p><AddTodo setTodos={setTodos} /></div>)
 }
 
 function AddTodo({ setTodos }) {
@@ -53,8 +53,14 @@ function AddTodo({ setTodos }) {
       text,
       done: false,
     };
-    setTodos((prevTodos) => {
-      return prevTodos.concat(newdo);
+    
+
+    setTodos((prevTodos) => { 
+      if (Array.isArray(prevTodos)) {
+      /* Getting a Promise not an array - async issue */
+      console.log("data here", prevTodos, newdo); 
+      return prevTodos.concat(newdo); }
+      return [newdo];
     });
     inputRef.current.value = "";
   };
