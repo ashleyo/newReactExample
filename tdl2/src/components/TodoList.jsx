@@ -1,22 +1,30 @@
+// replace map with mutating methods
 import "../App.css";
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle, faPlusSquare } from '@fortawesome/free-solid-svg-icons'
+import { GoogleSpreadsheet } from "google-spreadsheet";
 
 export default TodoList;
 
+
+
 function TodoList({ todos, setTodos }) {
 
+  const forceUpdate = useForceUpdate()
+  function useForceUpdate() {
+    const [,forceUpdate] = useState();
+    return React.useCallback(() => {
+      forceUpdate(s => !s)
+    }, []);
+  }
+
+  
   const handleToggle = (todo) => {
-    const updatedTodos = todos.map((t) =>
-      t.id === todo.id
-        ? {
-            ...t,
-            done: (t.done.toLowerCase() === "true")? "false": "true",
-          }
-        : t
-    );
-    setTodos(updatedTodos);
+    const index = todos.findIndex((e) => e.id === todo.id)
+    todos[index].done = todos[index].done.toLowerCase() === "true" ? "false" : "true";
+    todos[index].save()
+    forceUpdate()
   };
 
   return todos ?
@@ -45,23 +53,21 @@ function TodoList({ todos, setTodos }) {
 
 function AddTodo({ setTodos }) {
   const inputRef = React.useRef();
+
   const handleAddTodo = (e) => {
     e.preventDefault();
     let text = e.target.elements.addTodo.value;
     const newdo = {
       id: (min, max) => Math.floor(Math.random() * (max - min)) + min,
       text,
-      done: false,
+      done: "false",
     };
     
 
-    setTodos((prevTodos) => { 
-      if (Array.isArray(prevTodos)) {
-      /* Getting a Promise not an array - async issue */
-      console.log("data here", prevTodos, newdo); 
-      return prevTodos.concat(newdo); }
-      return [newdo];
-    });
+    setTodos(async (prevTodos) => { 
+      console.log("data trace", prevTodos[1].text)
+      await prevTodos.addRow(newdo)}
+      );
     inputRef.current.value = "";
   };
   return (

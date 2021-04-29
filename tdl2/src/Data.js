@@ -1,4 +1,5 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
+//https://github.com/theoephraim/node-google-spreadsheet
 
 // Config variables
 const SPREADSHEET_ID = "1L4N9X_uOnk4uDg109RJiTyx6kAXHc2XXl27-KJqNymk";
