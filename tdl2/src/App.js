@@ -1,8 +1,8 @@
-/*https://docs.google.com/spreadsheets/d/1L4N9X_uOnk4uDg109RJiTyx6kAXHc2XXl27-KJqNymk/edit#gid=0*/
+
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import TodoList from "./components/TodoList"
-import Data from "./Data"
+import Data, {getUIData, toggleStatus, addRow, deleteRow} from "./Data"
 
 export default App;
 /*
@@ -21,10 +21,42 @@ const testFixture = [
 /* const rows = getrows(); */
 /* currently breaks adding items because rows is a Promise not an array ... */
 
+
+
+function TestComp({dispatch}) {
+  return (
+    <p><button onClick={() => dispatch({type:'toggle'})}>Press</button>put stuff here</p>
+  );
+}
+
+
 function App() {
 
   const [todos, setTodos] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [,setUpdateUI] = useState(Date.now())
+  const [, dispatch] = useReducer(reducer, Date.now() );
+
+
+  function reducer(id, action) {
+    switch (action.type) {
+      case 'toggle':
+        //toggleStatus(id)
+        console.log("toggle provided with id", id)
+        setUpdateUI()
+        return Data;
+      case 'addrow': //in this case id should be the new row rather than an id
+        //addRow(id)
+        setUpdateUI()
+        return Data;
+      case 'deleterow':
+        //deleteRow(id)
+        setUpdateUI()
+        return Data
+      default:
+        throw new Error(); 
+    }
+  }
 
   useEffect (() => {
     let rows = []
@@ -43,6 +75,7 @@ function App() {
   return !loading ? (
     <div className="App">
       <header className="App-header">
+        <TestComp dispatch={dispatch} />
         <h1>Todo List</h1>
       </header>
       <TodoList setTodos={setTodos} todos={todos} />

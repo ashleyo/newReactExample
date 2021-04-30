@@ -64,9 +64,9 @@ function AddTodo({ setTodos }) {
     };
     
 
-    setTodos(async (prevTodos) => { 
-      console.log("data trace", prevTodos[1].text)
-      await prevTodos.addRow(newdo)}
+    setTodos((prevTodos) => { 
+      console.log("modifying", prevTodos)
+      prevTodos.addRow(newdo)}
       );
     inputRef.current.value = "";
   };
@@ -86,6 +86,7 @@ function AddTodo({ setTodos }) {
 function DeleteTodo({ todo, setTodos }) {
   function handleDeleteTodo() {
     setTodos((prevTodos) => {
+      prevTodos[prevTodos.findIndex((e) => e.id === todo.id)].delete();   
       return prevTodos.filter((t) => t.id !== todo.id);
     });
   }

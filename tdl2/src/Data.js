@@ -1,5 +1,6 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 //https://github.com/theoephraim/node-google-spreadsheet
+/*https://docs.google.com/spreadsheets/d/1L4N9X_uOnk4uDg109RJiTyx6kAXHc2XXl27-KJqNymk/edit#gid=0*/
 
 // Config variables
 const SPREADSHEET_ID = "1L4N9X_uOnk4uDg109RJiTyx6kAXHc2XXl27-KJqNymk";
@@ -32,12 +33,34 @@ const readRows = async () => {
   let rows =  await sheet.getRows();
   return rows;
 }
-/*
-const addRow = async (row) => {
-    const rows = await sheet.addRow(row);
-    return rows
-  };
-*/
 
 const Data = readRows();
 export default Data; // exporting RO
+
+export function getUIData() {
+  return Data.map(row => {
+    return {
+      id: row.id, 
+      text: row.text, 
+      status: (row.status.toLowercase() === "true"? true : false)}
+  })
+}
+
+export async function toggleStatus(id) {
+  const index = Data.findIndex((r) => r.id === id)
+  Data[index].status = Data[index].status.toLowercase === "true" ? "FALSE": "TRUE"
+  await Data[index].save()
+}
+
+export async function addRow(obj) {
+  await Data.addRow(obj)
+}
+
+export async function deleteRow(id) {
+  const index = Data.findIndex((r) => r.id === id)
+  await Data[index].delete()
+}
+
+
+
+
